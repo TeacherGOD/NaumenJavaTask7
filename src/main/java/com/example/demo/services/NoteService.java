@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.note.Note;
-import com.example.demo.repositories.NoteRepository;
+import com.example.demo.entities.Note;
+import com.example.demo.repositories.NoteRepository1;
 import com.example.demo.services.interfaces.NoteInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,16 +13,16 @@ import java.util.ArrayList;
 public class NoteService implements NoteInterface {
 
 
-    private final NoteRepository noteRepository;
+    private final NoteRepository1 noteRepository1;
 
     @Autowired
-    public NoteService(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
+    public NoteService(NoteRepository1 noteRepository1) {
+        this.noteRepository1 = noteRepository1;
     }
 
     @Override
     public void createNote(String title, String content,Boolean pinned) {
-        noteRepository.create(new Note(title, content,pinned));
+        noteRepository1.create(new Note(title, content,pinned));
     }
 
     public void createNote(String title, String content)
@@ -32,7 +32,7 @@ public class NoteService implements NoteInterface {
 
     @Override
     public void deleteNote(Long id) {
-        noteRepository.delete(id);
+        noteRepository1.delete(id);
     }
 
     @Override
@@ -43,27 +43,27 @@ public class NoteService implements NoteInterface {
 
     @Override
     public void updateNote(Note note) {
-        noteRepository.update(note);
+        noteRepository1.update(note);
     }
 
     @Override
     public Note getNoteById(Long id) {
-        return noteRepository.read(id);
+        return noteRepository1.read(id);
     }
 
     @Override
     public ArrayList<Note> findNoteByTitle(String title) {
-        return noteRepository.findByTitle(title);
+        return noteRepository1.findByTitle(title);
     }
 
     @Override
     public ArrayList<Note> getAllNotes() {
-        return noteRepository.getNotes();
+        return noteRepository1.getNotes();
     }
 
     @Override
     public Note pinNote(Long id) {
-        Note note = noteRepository.read(id);
+        Note note = noteRepository1.read(id);
         note.setPinned(true);
         updateNote(note);
         return note;
@@ -71,7 +71,7 @@ public class NoteService implements NoteInterface {
 
     @Override
     public Note unpinNote(Long id) {
-        Note note = noteRepository.read(id);
+        Note note = noteRepository1.read(id);
         note.setPinned(false);
         updateNote(note);
         return note;

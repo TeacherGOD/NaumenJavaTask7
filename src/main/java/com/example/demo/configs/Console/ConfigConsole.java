@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Scanner;
 import org.springframework.boot.CommandLineRunner;
 
-@Configuration
+//@Configuration
 public class ConfigConsole {
 
     // Console configuration
-    @Autowired
+//    @Autowired
     private CommandProcessor commandProcessor;
 
     public ConfigConsole(CommandProcessor commandProcessor) {

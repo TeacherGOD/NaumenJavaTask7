@@ -1,7 +1,7 @@
 package com.example.demo.configs;
 
 
-import com.example.demo.note.Note;
+import com.example.demo.entities.Note;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

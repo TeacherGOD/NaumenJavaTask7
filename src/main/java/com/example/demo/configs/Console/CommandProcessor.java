@@ -1,6 +1,6 @@
 package com.example.demo.configs.Console;
 
-import com.example.demo.note.Note;
+import com.example.demo.entities.Note;
 import com.example.demo.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

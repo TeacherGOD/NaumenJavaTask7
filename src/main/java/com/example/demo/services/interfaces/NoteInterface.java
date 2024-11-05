@@ -1,6 +1,6 @@
 package com.example.demo.services.interfaces;
 
-import com.example.demo.note.Note;
+import com.example.demo.entities.Note;
 
 import java.util.ArrayList;
 
