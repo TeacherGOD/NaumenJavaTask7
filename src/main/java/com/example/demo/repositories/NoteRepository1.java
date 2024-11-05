@@ -30,14 +30,16 @@ public class NoteRepository1 implements CrudRepository<Note,Long> {
     @Override
     public void create(Note note) {
 
-        if (note.getId()==null)
-        {
-            note.setId(nextId());
-        }
-        if (notesContainer.stream().anyMatch(n->n.getId().equals(note.getId())))
-        {
-            throw new IllegalArgumentException("Note with id "+note.getId()+" already exists.\n May be you wanna use Update?");
-        }
+
+        //т.к. сейчас уже есть генератор id в бд, код отключаю.
+//        if (note.getId()==null)
+//        {
+//            note.setId(nextId());
+//        }
+//        if (notesContainer.stream().anyMatch(n->n.getId().equals(note.getId())))
+//        {
+//            throw new IllegalArgumentException("Note with id "+note.getId()+" already exists.\n May be you wanna use Update?");
+//        }
         notesContainer.add(note);
     }
 

@@ -28,4 +28,9 @@ public class User {
     private String email;
     private String passwordHash;
 
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

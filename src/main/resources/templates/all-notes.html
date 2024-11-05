@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User List</title>
+</head>
+<body>
+<h1>User List</h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Pinned</th>
+        <th>Tags</th>
+        <th>Text</th>
+        <th>User</th>
+    </tr>
+    <tr th:each="note: ${notes}">
+        <td th:text="${note.id}"></td>
+        <td th:text="${note.title}"></td>
+        <td th:text="${note.category}"></td>
+        <td th:text="${note.pinned}"></td>
+        <td th:text="${#strings.listJoin(note.tags, ', ')}"></td>
+        <td th:text="${note.text}"></td>
+        <td th:text="${note.user}"></td>
+    </tr>
+</table>
+<br />
+<br />
+<a th:href="@{/notes/create}">
+<button type="button" class="btn btn-primary" >
+
+        Add More Note
+
+</button>
+</a>
+</body>
+</html>

@@ -53,7 +53,6 @@ public class Note {
         this.title = title;
         this.text = text;
         this.pinned = pinned != null && pinned;
-        this.pinned=false;
         this.tags=new ArrayList<>();
     }
 

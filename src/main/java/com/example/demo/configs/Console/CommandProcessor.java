@@ -1,7 +1,7 @@
 package com.example.demo.configs.Console;
 
 import com.example.demo.entities.Note;
-import com.example.demo.services.NoteService;
+import com.example.demo.services.NoteServiceOld;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class CommandProcessor {
 
 
-    private final NoteService noteService;
+    private final NoteServiceOld noteService;
 
     @Autowired
-    public CommandProcessor(NoteService noteService) {
+    public CommandProcessor(NoteServiceOld noteService) {
         this.noteService = noteService;
     }
 
