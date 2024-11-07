@@ -58,9 +58,9 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initUsers() {
-        // Создание пользователей
-        User user1 = new User("john_doe", "john@example.com", passwordEncoder.encode("123"));
-        User user2 = new User("jane_doe", "jane@example.com", passwordEncoder.encode("321"));
+
+        User user1 = new User("user", "john@example.com", passwordEncoder.encode("123"));
+        User user2 = new User("admin", "jane@example.com", passwordEncoder.encode("321"));
 
 
         userRepository.save(user1);
@@ -70,7 +70,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initCategories() {
-        // Создание категорий
+
         Category category1 = new Category("Tasks");
         Category category2 = new Category("Notes");
 
@@ -79,7 +79,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initTags() {
-        // Создание тегов
+
         Tag tag1 = new Tag("Urgent");
         Tag tag2 = new Tag("Personal");
         Tag tag3 = new Tag("Work");

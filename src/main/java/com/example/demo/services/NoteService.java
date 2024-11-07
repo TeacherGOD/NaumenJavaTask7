@@ -73,7 +73,7 @@ public class NoteService {
         if (note != null) {
             note.setTitle(title);
             note.setText(text);
-            noteRepository.save(note); // Сохраняем обновленную заметку
+            noteRepository.save(note);
         }
     }
 
@@ -96,7 +96,7 @@ public class NoteService {
         Note note = getNoteById(id);
         if (note != null) {
             note.setPinned(true);
-            return noteRepository.save(note); // Сохраняем обновленную заметку
+            return noteRepository.save(note);
         }
         return null;
     }
@@ -111,7 +111,7 @@ public class NoteService {
         Note note = getNoteById(id);
         if (note != null) {
             note.setPinned(false);
-            return noteRepository.save(note); // Сохраняем обновленную заметку
+            return noteRepository.save(note);
         }
         return null;
     }

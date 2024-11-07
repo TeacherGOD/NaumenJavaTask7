@@ -33,18 +33,18 @@ public class NoteReminderService {
             throw new IllegalArgumentException("Note must not be null");
         }
 
-        // Обрабатываем теги автоматически
+
         List<Tag> updatedTags = new ArrayList<>();
         for (Tag tag : note.getTags()) {
-            // Проверяем, существует ли тег в базе данных
+
             Tag existingTag = tagRepository.findByName(tag.getName()).orElseGet(() -> {
-                // Если не существует, создаем новый тег
+
                 return tagRepository.save(tag);
             });
-            updatedTags.add(existingTag); // Добавляем существующий тег в список
+            updatedTags.add(existingTag);
         }
 
-        note.setTags(updatedTags); // Устанавливаем обновленный список тегов
+        note.setTags(updatedTags);
 
 
 

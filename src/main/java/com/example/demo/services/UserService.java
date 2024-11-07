@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
+import com.example.demo.exceptions.AlreadyExistException;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,15 @@ public class UserService {
     }
 
     public User createUser(String username, String email, String password) {
+
+        if (userRepository.existsByUsername(username)) {
+            throw new AlreadyExistException("Username already exists: " + username);
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new AlreadyExistException("Email already exists: " + email);
+        }
+
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);

@@ -26,20 +26,20 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/registration", "/login", "/logout").permitAll() // Разрешаем доступ к этим страницам всем
-                        .requestMatchers("/swagger-ui/**").hasRole("ADMIN") // Доступ к удалению только для ADMIN
-                        .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
+                        .requestMatchers("/registration", "/login", "/logout").permitAll()
+                        .requestMatchers("/swagger-ui/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
-                .formLogin(form -> form // Настройка формы логина
-                        //.loginPage("/login") // Указываем кастомную страницу логина
-                        .permitAll() // Разрешаем доступ к странице логина всем
-                        .defaultSuccessUrl("/notes/view/all", true) // Перенаправление после успешного входа
-                        .failureUrl("/login?error=true") // Перенаправление при ошибке входа
+                .formLogin(form -> form
+//                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/notes/view/all", true)
+                        .failureUrl("/login?error=true")
                 )
-                .logout(logout -> logout // Настройка выхода из системы
-                        .logoutUrl("/logout") // URL для выхода из системы
-                        .logoutSuccessUrl("/login") // Перенаправление после выхода
-                        .permitAll() // Разрешаем выход всем
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
                 );
 
         return http.build();
