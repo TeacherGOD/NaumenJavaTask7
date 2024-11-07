@@ -1,4 +1,4 @@
-package com.example.demo.configs.Console;
+package com.example.demo.config.Console;
 
 import com.example.demo.entities.Note;
 import com.example.demo.services.NoteServiceOld;

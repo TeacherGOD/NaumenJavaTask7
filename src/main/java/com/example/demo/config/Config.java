@@ -1,4 +1,4 @@
-package com.example.demo.configs;
+package com.example.demo.config;
 
 
 import com.example.demo.entities.Note;

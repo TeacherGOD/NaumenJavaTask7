@@ -1,9 +1,7 @@
-package com.example.demo.configs.Console;
+package com.example.demo.config.Console;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Scanner;
 import org.springframework.boot.CommandLineRunner;

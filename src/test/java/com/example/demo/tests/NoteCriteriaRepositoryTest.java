@@ -33,7 +33,7 @@ public class NoteCriteriaRepositoryTest {
         User user = new User();
         user.setUsername("testUser");
         user.setEmail("test@example.com");
-        user.setPasswordHash("hashedPassword");
+        user.setPassword("hashedPassword");
         userRepository.save(user);
 
         Note note = new Note();
