@@ -46,12 +46,11 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initAll() {
-        initTags();
-
-        initCategories();
-
         roleInit();
         initUsers();
+
+        initCategories();
+        initTags();
 
 
 
@@ -71,22 +70,53 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initCategories() {
 
-        Category category1 = new Category("Tasks");
-        Category category2 = new Category("Notes");
+        User user1 = userRepository.findByUsername("user").orElseThrow(() -> new IllegalStateException("User not found"));
+        User user2 = userRepository.findByUsername("admin").orElseThrow(() -> new IllegalStateException("User not found"));
+
+
+
+        Category category1 = new Category("Tasks",user1);
+        Category category2 = new Category("Notes",user1);
+        Category category3 = new Category("Private",category2,user1);
+        Category category4 = new Category("SUPER PRIVATE",category3,user1);
+        Category category5 = new Category("Public",category2,user1);
 
         categoryRepository.save(category1);
         categoryRepository.save(category2);
+        categoryRepository.save(category3);
+        categoryRepository.save(category4);
+        categoryRepository.save(category5);
+
+        Category category1User2=new Category("Tasks",user2);
+        Category category2User2=new Category("Notes",user2);
+        Category category3User2=new Category("Admin thoughts",category2User2,user2);
+
+        categoryRepository.save(category1User2);
+        categoryRepository.save(category2User2);
+        categoryRepository.save(category3User2);
+
+
     }
 
     private void initTags() {
 
-        Tag tag1 = new Tag("Urgent");
-        Tag tag2 = new Tag("Personal");
-        Tag tag3 = new Tag("Work");
 
+        User user1 = userRepository.findByUsername("user").orElseThrow(() -> new IllegalStateException("User not found"));
+        User user2 = userRepository.findByUsername("admin").orElseThrow(() -> new IllegalStateException("User not found"));
+
+        Tag tag1 = new Tag("Urgent",user1);
+        Tag tag2 = new Tag("Personal",user1);
+        Tag tag3 = new Tag("Work",user1);
         tagRepository.save(tag1);
         tagRepository.save(tag2);
         tagRepository.save(tag3);
+
+        Tag tag1User2 = new Tag("Spy",user2);
+        Tag tag2User2 = new Tag("Hi-hi",user2);
+        Tag tag3User2 = new Tag("Money",user2);
+        tagRepository.save(tag1User2);
+        tagRepository.save(tag2User2);
+        tagRepository.save(tag3User2);
     }
 
     private void roleInit() {

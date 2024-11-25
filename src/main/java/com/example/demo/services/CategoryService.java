@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Category;
+import com.example.demo.entities.User;
 import com.example.demo.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,10 @@ public class CategoryService {
 
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
+    }
+
+
+    public List<Category> getCategoriesByUser(User user) {
+        return categoryRepository.findAllByUser(user);
     }
 }

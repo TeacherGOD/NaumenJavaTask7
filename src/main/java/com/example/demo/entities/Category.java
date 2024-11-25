@@ -11,14 +11,16 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class Category {
-    public Category(String name) {
+    public Category(String name,User user) {
         this.name = name;
         this.parent = null;
+        this.user=user;
     }
 
-    public Category(String name, Category parent) {
+    public Category(String name, Category parent,User user) {
         this.name = name;
         this.parent = parent;
+        this.user = user;
     }
 
     @Id
@@ -26,6 +28,10 @@ public class Category {
     private Long id;
 
     private String name;
+
+    @ManyToOne // Связь с пользователем
+    @JoinColumn(name = "user_id", nullable = false) // Обязательное поле
+    private User user; // Пользователь, которому принадлежит категория
 
     @ManyToOne
     @JoinColumn(name = "parent_id")

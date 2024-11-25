@@ -13,9 +13,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 public class Tag {
-    public Tag(String name) {
-        this.name = name;
-    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +21,15 @@ public class Tag {
 
     private String name;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // Обязательное поле
+    private User user;
+
+    public Tag(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {

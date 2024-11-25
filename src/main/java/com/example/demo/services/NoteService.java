@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Note;
+import com.example.demo.entities.User;
 import com.example.demo.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,5 +115,9 @@ public class NoteService {
             return noteRepository.save(note);
         }
         return null;
+    }
+
+    public List<Note> findNotesByUser(User currentUser) {
+        return noteRepository.findNotesByUserId(currentUser.getId());
     }
 }

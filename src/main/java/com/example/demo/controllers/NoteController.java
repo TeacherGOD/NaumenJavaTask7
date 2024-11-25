@@ -6,6 +6,8 @@ import com.example.demo.entities.Tag;
 import com.example.demo.entities.User;
 import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +35,19 @@ public class NoteController {
     private UserService userService;
 
     @GetMapping("/view/all")
-    public String getAllNotes(Model model) {
+    public String getAllNotes(Model model,@AuthenticationPrincipal UserDetails userDetails) {
 
-        Iterable<Note> notes = noteService.getAllNotes();
+        var userName=userDetails.getUsername();
+        var currentUser =userService.findByUsername(userName);
+
+        List<Note> notes;
+        if (currentUser.hasRole("ADMIN")) {
+            notes = noteService.getAllNotes();
+        }else {
+            notes=noteService.findNotesByUser(currentUser);
+        }
+
+
 
         model.addAttribute("notes",notes);
         return "all-notes";
@@ -43,23 +55,32 @@ public class NoteController {
 
 
     @PostMapping("/add")
-    public String addNote(@ModelAttribute Note note) {
+    public String addNote(@ModelAttribute Note note, @AuthenticationPrincipal UserDetails userDetails) {
+
+        note.setUser(userService.findByUsername(userDetails.getUsername()));
         noteService.createNote(note);
+
         return "redirect:/notes/view/all";
     }
 
     @GetMapping("/create")
-    public String createNoteForm(Model model) {
+    public String createNoteForm(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("note", new Note());
 
+        var userName=userDetails.getUsername();
+        var currentUser =userService.findByUsername(userName);
 
-        List<Tag> tags = tagService.getAllTags();
-        List<Category> categories = categoryService.getAllCategories();
-        List<User> users = userService.getAllUsers();
+        List<Category> categories=categoryService.getCategoriesByUser(currentUser);
+        List<Tag> tags=tagService.getTagsByUser(currentUser);
+
+
+//        List<Tag> tags = tagService.getAllTags();
+//        List<Category> categories = categoryService.getAllCategories();
+//        List<User> users = userService.getAllUsers();
 
         model.addAttribute("tags", tags);
         model.addAttribute("categories", categories);
-        model.addAttribute("users", users);
+//        model.addAttribute("users", users);
 
         return "create-note";
     }

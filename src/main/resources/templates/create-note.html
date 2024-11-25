@@ -20,13 +20,6 @@
     </div>
 
     <div class="form-group">
-      <label for="user">User:</label>
-      <select id="user" th:field="*{user}" class="form-control" required>
-        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
-      </select>
-    </div>
-
-    <div class="form-group">
       <label for="category">Category:</label>
       <select id="category" th:field="*{category}" class="form-control" required>
         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
