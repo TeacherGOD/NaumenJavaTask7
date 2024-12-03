@@ -2,6 +2,7 @@ package com.example.demo.tests;
 
 import com.example.demo.entities.User;
 import com.example.demo.repositories.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +32,23 @@ public class UserRepositoryTest {
         Assertions.assertEquals(username, foundUser.get().getUsername());
 
     }
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
+    }
+
+    @Test
+    void testRemoveUserByID()
+    {
+        String username = UUID.randomUUID().toString();
+        User user = new User(username, UUID.randomUUID().toString(),"hashedPassword");
+        userRepository.save(user);
+
+        userRepository.deleteById(user.getId());
+
+        Optional<User> foundUser = userRepository.findByUsername(username);
+
+        Assertions.assertFalse(foundUser.isPresent());
+    }
+
 }

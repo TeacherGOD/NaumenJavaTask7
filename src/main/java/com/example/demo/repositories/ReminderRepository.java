@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,8 @@ import java.util.Optional;
 public interface ReminderRepository extends CrudRepository<Reminder, Long> {
 
 
-    List<Reminder> findByReminderTimeBetween(Date startTime, Date endTime);
-
     Optional<Reminder> findById(Long id);
+
+
+    List<Reminder> findAllByEnabledTrueAndTimeBefore(LocalDateTime now);
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+  <title>Фильтрация заметок</title>
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-4">Фильтрация заметок по тегам</h1>
+
+  <form th:action="@{/tags/filter}" method="get" class="mb-4">
+    <h2>Выберите теги:</h2>
+    <div th:each="tag : ${tags}">
+      <div class="form-check">
+        <label for="tag-${tag.id}"></label><input type="checkbox" class="form-check-input" name="tagIds" th:value="${tag.id}"
+                                                  th:checked="${selectedTags.contains(tag)}" id="tag-${tag.id}"/>
+        <label class="form-check-label" th:for="'tag-' + ${tag.id}">
+          <span th:text="${tag.name}"></span>
+        </label>
+      </div>
+    </div>
+
+    <h2>Поиск по заметкам:</h2>
+    <div class="form-group">
+      <label>
+        <input type="text" name="searchTerm" placeholder="Введите текст для поиска"
+               th:value="${searchTerm}" class="form-control"/>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Фильтровать</button>
+  </form>
+
+  <h2>Список заметок</h2>
+  <ul class="list-group mb-4">
+    <li th:each="note : ${notes}" class="list-group-item">
+      <strong th:text="${note.title}"></strong>:
+      <span th:text="${note.text}"></span>
+      <!-- Отображение тегов заметки -->
+      <span th:if="${note.tags.size() > 0}">
+                (Теги:
+                <span th:each="tag : ${note.tags}" th:text="${tag.name}"></span>)
+            </span>
+    </li>
+    <li class="list-group-item text-center">
+      <strong th:if="${notes.size() == 0}">Нет заметок с такими параметрами.</strong>
+    </li>
+  </ul>
+
+  <a th:href="@{/notes/view/all}" class="btn btn-secondary">Домой</a>
+</div>
+
+</body>
+</html>

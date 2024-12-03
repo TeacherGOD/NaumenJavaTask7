@@ -12,7 +12,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
-    Category findByName(String name);
+    Category findByNameAndUser(String name, User user);
 
     List<Category> findAllByUser(User user);
 }

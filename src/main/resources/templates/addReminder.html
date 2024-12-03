@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Reminder</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<h1>Add Reminder to Note</h1>
+
+<form action="#" th:action="@{/notes/{noteId}/reminders(noteId=${note.id})}" method="post">
+    <input type="hidden" th:field="*{note.id}" />
+
+    <label for="reminderTime">Reminder Time:</label>
+    <input type="datetime-local" id="reminderTime" name="reminderTime" required placeholder="Reminder Time"/>
+
+    <button type="submit">Add Reminder</button>
+</form>
+
+<a href="/notes/view/all">Back to Notes</a>
+
+</body>
+</html>

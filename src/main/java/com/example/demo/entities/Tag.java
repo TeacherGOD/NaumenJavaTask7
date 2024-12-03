@@ -4,14 +4,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tags",uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "tags")
 @Setter
 @Getter
 @NoArgsConstructor
+
 public class Tag {
 
 
@@ -22,9 +26,13 @@ public class Tag {
     private String name;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // Обязательное поле
     private User user;
+
+
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<Note> notes = new ArrayList<>();
 
     public Tag(String name, User user) {
         this.name = name;

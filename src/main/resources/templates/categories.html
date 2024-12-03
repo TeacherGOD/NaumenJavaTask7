@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Категории</title>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>Категории</h1>
+
+<form th:action="@{/categories/add}" method="post">
+  <label>
+    <input type="text" name="name" placeholder="Название категории" required/>
+  </label>
+
+  <label for="parentId">Родительская категория:</label>
+  <select name="parentId" id="parentId">
+    <option value="">Нет</option>
+    <option th:each="category : ${categories}"
+            th:value="${category.id}"
+            th:text="${category.toString()}"></option>
+  </select>
+
+  <button type="submit">Добавить категорию</button>
+</form>
+
+<h2>Список категорий</h2>
+<ul>
+  <li th:each="category : ${categories}" th:if="${category.parent==null}">
+
+
+      <span th:text="${category.name}"></span>
+      <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;">
+        <button type="submit">Удалить</button>
+      </form>
+
+    <!-- Вызов рекурсивного метода для отображения дочерних категорий -->
+    <ul th:if="${#lists.size(category.children) > 0}">
+      <th:block th:replace="fragments/categoryTree :: categoryList(categories=${category.children})"></th:block>
+    </ul>
+  </li>
+</ul>
+
+<a th:href="@{notes/view/all}" class="btn btn-secondary">Домой</a>
+</body>
+</html>

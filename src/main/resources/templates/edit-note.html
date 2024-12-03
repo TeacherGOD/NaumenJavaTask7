@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Note</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>Edit Note</h1>
+
+<form th:action="@{/notes/edit/{id}(id=${note.id})}" method="post">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" th:value="${note.title}" class="form-control" required/>
+  </div>
+
+  <div class="form-group">
+    <label for="text">Text</label>
+    <textarea id="text" name="text" class="form-control" required th:text="${note.text}"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="category">Category</label>
+    <select id="category" name="category" class="form-control" required>
+
+      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="tags">Tags</label>
+      <select id="tags" name="tags" multiple required class="form-control">
+      <option th:each="tag : ${tags}"
+              th:value="${tag.id}"
+              th:text="${tag.name}"
+              th:selected="${#lists.contains(note.tags, tag)}"></option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Update Note</button>
+  <a href="/notes/view/all" class="btn btn-secondary">Cancel</a>
+</form>
+
+</body>
+</html>

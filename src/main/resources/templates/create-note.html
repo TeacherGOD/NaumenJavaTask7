@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Create Note</title>
+  <title>Создание заметки</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
 <div class="container mt-5">
-  <h2>Create a New Note</h2>
+  <h2>Создать новую заметку</h2>
   <form th:action="@{/notes/add}" th:object="${note}" method="post">
     <div class="form-group">
       <label for="title">Title:</label>
@@ -22,7 +22,7 @@
     <div class="form-group">
       <label for="category">Category:</label>
       <select id="category" th:field="*{category}" class="form-control" required>
-        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.toString()}"></option>
       </select>
     </div>
 
@@ -31,16 +31,16 @@
       <select id="tags" th:field="*{tags}" class="form-control" multiple required>
         <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
       </select>
-      <small>Select multiple tags by holding down the Ctrl (Windows) or Command (Mac) button.</small>
+      <small>Можете выбрать несколько тегов зажав Ctrl</small>
     </div>
 
     <div class="form-group form-check">
       <input type="checkbox" th:field="*{pinned}" class="form-check-input" id="pinned"/>
-      <label class="form-check-label" for="pinned">Pin this note</label>
+      <label class="form-check-label" for="pinned">Закрепить?</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Note</button>
-    <a href="/notes/view/all" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Создать заметку</button>
+    <a th:href="@{/notes/view/all}" class="btn btn-secondary">Отмена</a>
   </form>
 </div>
 

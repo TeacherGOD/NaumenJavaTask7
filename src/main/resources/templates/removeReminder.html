@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удалить Напоминание</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>Удалить Напоминание</h1>
+
+<form action="#" th:action="@{/notes/reminders/{reminderId}/delete(reminderId=${reminder.id})}" method="post">
+    <p>Вы уверены, что хотите удалить следующее напоминание?</p>
+    <p th:text="'Напоминание на: ' + ${reminder.time}"></p>
+
+<!--    &lt;!&ndash; Здесь мы не используем th:field для id, так как это скрытое поле &ndash;&gt;-->
+<!--    <input type="hidden" th:field="*{id}" />-->
+
+    <button type="submit">Удалить Напоминание</button>
+</form>
+
+<a th:href="@{/notes/view}">Назад к Заметкам</a>
+
+</body>
+</html>

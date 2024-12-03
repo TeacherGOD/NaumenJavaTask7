@@ -1,14 +1,16 @@
 package com.example.demo.services;
 
+import com.example.demo.entities.Category;
 import com.example.demo.entities.Note;
+import com.example.demo.entities.Tag;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.NoteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class NoteService {
@@ -48,8 +50,7 @@ public class NoteService {
      * @return Список всех заметок.
      */
     public List<Note> getAllNotes() {
-        return StreamSupport.stream(noteRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return noteRepository.findAll();
     }
 
     /**
@@ -65,15 +66,19 @@ public class NoteService {
     /**
      * Обновление существующей заметки.
      *
-     * @param id    ID заметки для обновления.
-     * @param title Новый заголовок заметки.
-     * @param text  Новый текст заметки.
+     * @param id       ID заметки для обновления.
+     * @param title    Новый заголовок заметки.
+     * @param text     Новый текст заметки.
+     * @param category
+     * @param tags
      */
-    public void updateNote(Long id, String title, String text) {
+    public void updateNote(Long id, String title, String text, Category category, List<Tag> tags) {
         Note note = getNoteById(id);
         if (note != null) {
             note.setTitle(title);
             note.setText(text);
+            note.setCategory(category);
+            note.setTags(tags);
             noteRepository.save(note);
         }
     }
@@ -83,8 +88,14 @@ public class NoteService {
      *
      * @param id ID заметки для удаления.
      */
+    @Transactional
     public void deleteNote(Long id) {
-        noteRepository.deleteById(id);
+        if (noteRepository.existsById(id)) {
+            noteRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Note with id " + id + " not found");
+        }
+
     }
 
     /**
@@ -119,5 +130,38 @@ public class NoteService {
 
     public List<Note> findNotesByUser(User currentUser) {
         return noteRepository.findNotesByUserId(currentUser.getId());
+    }
+
+    public List<Note> getPinnedNotesByUser(User user) {
+        return noteRepository.findNotesByUserIdAndPinnedTrue(user.getId());
+    }
+
+    public List<Note> findAllPinned() {
+        return noteRepository.findAllByPinnedTrue();
+    }
+
+    public List<Note> findPinnedByUser(User currentUser) {
+        return noteRepository.findNotesByUserIdAndPinnedTrue(currentUser.getId());
+    }
+
+    public Note findNote(Long id) {
+        return noteRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Note with id "+ id+"is not found.") );
+    }
+
+    public void togglePin(Long id){
+        Note note = findNote(id);
+        note.setPinned(!note.isPinned());
+        noteRepository.save(note);
+
+    }
+
+    // Метод для получения заметок по тегам
+    public List<Note> getNotesByTags(List<Tag> tags) {
+        return noteRepository.findDistinctByTagsIn(tags);
+    }
+
+
+    public List<Note> searchNotesByUserAndTerm(User user, String searchTerm) {
+        return noteRepository.searchNotesByUserAndTerm(user, searchTerm);
     }
 }

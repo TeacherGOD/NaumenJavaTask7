@@ -9,9 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -33,6 +31,10 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+//
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Note> notes = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.EAGER) // Загружаем роли вместе с пользователем
     @JoinTable(
             name = "user_roles",
@@ -40,6 +42,10 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles= new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Set<Category> categories=new HashSet<>();
+
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -51,6 +57,9 @@ public class User implements UserDetails {
     {
         return roles.stream().anyMatch(myRole -> myRole.getName().equalsIgnoreCase(role));
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Tag> tags = new ArrayList<>();
 
 
     @Override

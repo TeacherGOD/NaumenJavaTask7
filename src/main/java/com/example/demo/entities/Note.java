@@ -29,11 +29,11 @@ public class Note {
     private boolean pinned;
 
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -47,6 +47,9 @@ public class Note {
     private List<Tag> tags = new ArrayList<>();
 
 
+    @OneToOne(mappedBy = "note",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Reminder reminder;
+
     public Note(String title, String text, Boolean pinned) {
         id=null;
 
@@ -54,6 +57,7 @@ public class Note {
         this.text = text;
         this.pinned = pinned != null && pinned;
         this.tags=new ArrayList<>();
+        reminder=null;
     }
 
     public Note(Long id, String title, String content) {

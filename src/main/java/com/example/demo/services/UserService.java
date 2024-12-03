@@ -1,14 +1,18 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Role;
+import com.example.demo.entities.Tag;
 import com.example.demo.entities.User;
 import com.example.demo.exceptions.AlreadyExistException;
 import com.example.demo.repositories.RoleRepository;
+import com.example.demo.repositories.TagRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,14 +25,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TagRepository tagRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, TagRepository tagRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tagRepository = tagRepository;
     }
 
+    @Transactional
     public User createUser(String username, String email, String password) {
 
         if (userRepository.existsByUsername(username)) {
@@ -50,9 +57,10 @@ public class UserService {
         roles.add(userRole);
         user.setRoles(roles);
 
-
-
-        return userRepository.save(user);
+        var resUser=userRepository.save(user);
+        addDefaultTags(user);
+        return resUser;
+        //return userRepository.save(user);
     }
 
     public void addRole(User user,String role) {
@@ -60,6 +68,15 @@ public class UserService {
                .orElseThrow(() -> new RuntimeException("Role " + role + " not found"));
         user.getRoles().add(userRole);
         userRepository.save(user);
+    }
+
+
+    private void addDefaultTags(User user) {
+        List<String> defaultTagNames = Arrays.asList("Срочное", "Личное", "Работа"); // Предустановленные теги
+        for (String tagName : defaultTagNames) {
+            Tag tag = new Tag(tagName, user);
+            tagRepository.save(tag);
+        }
     }
 
 
@@ -82,6 +99,10 @@ public class UserService {
             }
             userRepository.save(user);
         }
+    }
+
+    public void upgradeToPremium(User user) {
+        addRole(user,"PREMIUM");
     }
 
     public void deleteUser(Long id) {

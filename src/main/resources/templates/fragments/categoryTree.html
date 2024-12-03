@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Фрагменты категорий</title>
+</head>
+<body>
+
+<!-- Рекурсивный список категорий -->
+<div th:fragment="categoryList(categories)">
+  <ul>
+    <li th:each="category : ${categories}">
+      <span th:text="${category.name}"></span>
+      <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;">
+        <button type="submit">Удалить</button>
+      </form>
+
+      <!-- Вызов рекурсивного метода для отображения дочерних категорий -->
+      <ul th:if="${#lists.size(category.children) > 0}">
+        <th:block th:replace="fragments/categoryTree :: categoryList(categories=${category.children})"></th:block>
+      </ul>
+
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>

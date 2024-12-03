@@ -8,19 +8,21 @@ import com.example.demo.repositories.NoteRepository;
 import com.example.demo.repositories.ReminderRepository;
 import com.example.demo.repositories.TagRepository;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.NoteReminderService;
+import com.example.demo.services.ReminderService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDateTime;
 
 
 @SpringBootTest
-public class NoteReminderServiceTest {
+public class ReminderServiceTest {
 
     @Autowired
-    private NoteReminderService noteReminderService;
+    private ReminderService reminderService;
 
     @Autowired
     private NoteRepository noteRepository;
@@ -43,6 +45,7 @@ public class NoteReminderServiceTest {
 
         Tag tag1 = new Tag();
         tag1.setName("Default");
+        tag1.setUser(user);
         tagRepository.save(tag1);
         Tag tag = tagRepository.findByName("Default").orElseGet(() -> {
             Tag newTag = new Tag();
@@ -58,10 +61,10 @@ public class NoteReminderServiceTest {
         note.addTag(tag);
 
         Reminder reminder = new Reminder();
-        reminder.setReminderTime(new java.util.Date());
+        reminder.setTime(LocalDateTime.now());
         reminder.setNote(note);
 
-        noteReminderService.createNoteWithReminder(note, reminder);
+        reminderService.createNoteWithReminder(note, reminder);
 
         Assertions.assertNotNull(note.getId());
         Assertions.assertNotNull(reminder.getId());
@@ -76,15 +79,19 @@ public class NoteReminderServiceTest {
     void testCreateNoteWithInvalidReminder() {
         // Попытка создать напоминание без заметки (отрицательный кейс)
         Reminder reminder = new Reminder();
-        reminder.setReminderTime(new java.util.Date());
+        reminder.setTime(LocalDateTime.now());
 
         Exception exception = Assertions.assertThrows(Exception.class, () -> {
-            noteReminderService.createNoteWithReminder(null, reminder);
+            reminderService.createNoteWithReminder(null, reminder);
         });
 
         String expectedMessage = "Note must not be null";
         String actualMessage = exception.getMessage();
 
         Assertions.assertTrue(actualMessage.contains(expectedMessage));
+    }
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
     }
 }

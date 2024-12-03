@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="csrf-token" th:content="${_csrf.token}"/>
+  <title>Управление тегами</title>
+</head>
+<body>
+<h1>Управление тегами</h1>
+
+<form th:action="@{/tags/add}" method="post">
+  <label>
+    <input type="text" name="name" placeholder="Название тега" required/>
+  </label>
+  <button type="submit">Добавить тег</button>
+</form>
+
+<h2>Список тегов</h2>
+<ul>
+  <li th:each="tag : ${tags}">
+    <span th:text="${tag.name}"></span>
+
+
+    <form th:action="@{/tags/delete/{id}(id=${tag.id})}" method="post" style="display:inline;">
+
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <button type="submit">Удалить</button>
+    </form>
+
+
+    <form th:action="@{/tags/update/{id}(id=${tag.id})}" method="post" style="display:inline;">
+
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <label>
+        <input type="text" name="newName" placeholder="Новое имя тега" required/>
+      </label>
+      <button type="submit">Обновить</button>
+    </form>
+  </li>
+</ul>
+
+<a th:href="@{notes/view/all}" class="btn btn-secondary">Домой</a>
+</body>
+</html>

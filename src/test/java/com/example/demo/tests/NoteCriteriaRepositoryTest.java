@@ -5,6 +5,7 @@ import com.example.demo.entities.User;
 import com.example.demo.repositories.NoteRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.criteria.NoteCriteriaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class NoteCriteriaRepositoryTest {
 
     @Test
     void testFindNotesByTitle() {
+
 
         User user = new User();
         user.setUsername("testUser");
@@ -56,5 +58,9 @@ public class NoteCriteriaRepositoryTest {
         Assertions.assertEquals(savedNote.getId(), foundNote.getId());
         Assertions.assertEquals(savedNote.getTitle(), foundNote.getTitle());
         Assertions.assertEquals(savedNote.getText(), foundNote.getText());
+    }
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
     }
 }
