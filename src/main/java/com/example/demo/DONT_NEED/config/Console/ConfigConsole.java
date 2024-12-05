@@ -1,4 +1,4 @@
-package com.example.demo.config.Console;
+package com.example.demo.DONT_NEED.config.Console;
 
 
 import org.springframework.context.annotation.Bean;

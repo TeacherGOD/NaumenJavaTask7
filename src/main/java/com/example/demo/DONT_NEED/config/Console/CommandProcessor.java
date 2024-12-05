@@ -1,7 +1,7 @@
-package com.example.demo.config.Console;
+package com.example.demo.DONT_NEED.config.Console;
 
+import com.example.demo.DONT_NEED.services.NoteServiceOld;
 import com.example.demo.entities.Note;
-import com.example.demo.services.NoteServiceOld;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

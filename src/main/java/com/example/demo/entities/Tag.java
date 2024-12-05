@@ -4,12 +4,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Класс, представляющий тег для заметок.
+ * <p>
+ * Каждый тег может принадлежать пользователю и быть связан с несколькими заметками.
+ * </p>
+ *
+ * @author VladimirBoss
+ */
 @Entity
 @Table(name = "tags")
 @Setter
@@ -19,20 +26,24 @@ import java.util.Objects;
 public class Tag {
 
 
+    /**
+     * Список заметок, связанны с этим тегом.
+     */
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<Note> notes = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    /**
+     * Название тега.
+     */
     private String name;
-
-
+    /**
+     * Пользователь, которому принадлежит тег.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // Обязательное поле
     private User user;
-
-
-    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    List<Note> notes = new ArrayList<>();
 
     public Tag(String name, User user) {
         this.name = name;

@@ -9,7 +9,12 @@
 <div th:fragment="categoryList(categories)">
   <ul>
     <li th:each="category : ${categories}">
-      <span th:text="${category.name}"></span>
+      <form th:action="@{/categories/update/{id}(id=${category.id})}" method="post" style="display:inline;">
+        <label>
+          <input type="text" name="newName" th:value="${category.name}" required/>
+        </label>
+        <button type="submit">Редактировать</button>
+      </form>
       <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;">
         <button type="submit">Удалить</button>
       </form>

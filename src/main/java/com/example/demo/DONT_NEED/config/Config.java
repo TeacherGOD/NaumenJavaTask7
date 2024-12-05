@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.DONT_NEED.config;
 
 
 import com.example.demo.entities.Note;
@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.ArrayList;
 
 @Configuration
-@EnableScheduling
+
 public class Config {
 
 

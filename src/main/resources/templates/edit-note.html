@@ -22,7 +22,7 @@
     <label for="category">Category</label>
     <select id="category" name="category" class="form-control" required>
 
-      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.toString()}"></option>
     </select>
   </div>
 
@@ -36,8 +36,8 @@
     </select>
   </div>
 
-  <button type="submit" class="btn btn-primary">Update Note</button>
-  <a href="/notes/view/all" class="btn btn-secondary">Cancel</a>
+  <button type="submit" class="btn btn-primary">Обновить</button>
+  <a href="/notes/view/all" class="btn btn-secondary">Отмена</a>
 </form>
 
 </body>

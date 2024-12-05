@@ -1,8 +1,8 @@
-package com.example.demo.services;
+package com.example.demo.DONT_NEED.services;
 
+import com.example.demo.DONT_NEED.repositories.NoteRepository1;
 import com.example.demo.entities.Note;
-import com.example.demo.repositories.NoteRepository1;
-import com.example.demo.services.interfaces.NoteInterface;
+import com.example.demo.DONT_NEED.services.interfaces.NoteInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

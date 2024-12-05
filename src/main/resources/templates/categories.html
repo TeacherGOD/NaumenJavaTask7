@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Категории</title>
-
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -26,13 +25,20 @@
 
 <h2>Список категорий</h2>
 <ul>
-  <li th:each="category : ${categories}" th:if="${category.parent==null}">
+  <li th:each="category : ${categories}" th:if="${category.parent == null}">
+    <span th:text="${category.name}"></span>
 
+    <!-- Форма для редактирования категории -->
+    <form th:action="@{/categories/update/{id}(id=${category.id})}" method="post" style="display:inline;">
+      <label>
+        <input type="text" name="newName" th:value="${category.name}" required/>
+      </label>
+      <button type="submit">Редактировать</button>
+    </form>
 
-      <span th:text="${category.name}"></span>
-      <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;">
-        <button type="submit">Удалить</button>
-      </form>
+    <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;">
+      <button type="submit">Удалить</button>
+    </form>
 
     <!-- Вызов рекурсивного метода для отображения дочерних категорий -->
     <ul th:if="${#lists.size(category.children) > 0}">

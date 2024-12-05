@@ -1,10 +1,10 @@
-package com.example.demo.services;
+package com.example.demo.DONT_NEED.services;
 
 import com.example.demo.entities.Note;
-import com.example.demo.entities.Report;
-import com.example.demo.entities.ReportStatus;
+import com.example.demo.DONT_NEED.entities.Report;
+import com.example.demo.DONT_NEED.entities.ReportStatus;
 import com.example.demo.repositories.NoteRepository;
-import com.example.demo.repositories.ReportRepository;
+import com.example.demo.DONT_NEED.repositories.ReportRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,17 +26,6 @@ public class ReportService {
 
     @Autowired
     private NoteRepository noteRepository;
-
-
-
-
-
-
-
-
-
-
-
 
     public Long createReport() {
         Report report = new Report();

@@ -10,12 +10,27 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Реализация интерфейса NoteCriteriaRepository для выполнения запросов к заметкам.
+ * <p>
+ * Этот класс использует JPA Criteria API для построения запросов
+ * к базе данных на основе различных критериев.
+ * </p>
+ *
+ * @author VladimirBoss
+ */
 @Repository
 public class NoteCriteriaRepositoryImpl implements NoteCriteriaRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Находит список заметок по заданному заголовку.
+     *
+     * @param title Заголовок заметки для поиска.
+     * @return Список заметок, соответствующих заданному заголовку.
+     */
     @Override
     public List<Note> findNotesByTitle(String title) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -27,6 +42,12 @@ public class NoteCriteriaRepositoryImpl implements NoteCriteriaRepository {
         return entityManager.createQuery(query).getResultList();
     }
 
+    /**
+     * Находит список заметок, принадлежащих пользователю с заданным идентификатором.
+     *
+     * @param userId Идентификатор пользователя для поиска его заметок.
+     * @return Список заметок, принадлежащих пользователю с заданным идентификатором.
+     */
     @Override
     public List<Note> findNotesByUserId(Long userId) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();

@@ -93,9 +93,9 @@ public class NoteRepositoryTest {
 
         Note savedNote = noteRepository.save(note);
 
-        noteService.deleteNote(note.getId());
+//        noteService.deleteNote(note.getId());
 
-//        noteController.deleteNote(note.getId(), user);
+        noteController.deleteNote(note.getId(), user);
 
         Note deletedNote = noteRepository.findById(savedNote.getId()).orElse(null);
 
