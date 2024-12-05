@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Reminder</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="container bg-dark text-light p-4">
 
-<h1>Add Reminder to Note</h1>
+<h1>Добавить напоминание</h1>
 
 <form action="#" th:action="@{/notes/{noteId}/reminders(noteId=${note.id})}" method="post">
     <input type="hidden" th:field="*{note.id}" />
 
-    <label for="reminderTime">Reminder Time:</label>
+    <label for="reminderTime">Время:</label>
     <input type="datetime-local" id="reminderTime" name="reminderTime" required placeholder="Reminder Time"/>
 
-    <button type="submit">Add Reminder</button>
+    <button type="submit">Добавить</button>
 </form>
 
-<a href="/notes/view/all">Back to Notes</a>
+<a th:href="@{/notes/view/all}" class="btn btn-secondary">Назад</a>
 
 </body>
 </html>

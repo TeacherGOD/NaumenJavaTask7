@@ -3,8 +3,10 @@
 <head>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
   <title>Фильтрация заметок</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
-<body>
+<body class="container bg-dark text-light p-4">
 <div class="container">
   <h1 class="mt-4">Фильтрация заметок по тегам</h1>
 
@@ -32,17 +34,17 @@
   </form>
 
   <h2>Список заметок</h2>
-  <ul class="list-group mb-4">
-    <li th:each="note : ${notes}" class="list-group-item">
+  <ul class="list-group mb-4 bg-dark">
+    <li th:each="note : ${notes}" class="list-group-item bg-dark">
       <strong th:text="${note.title}"></strong>:
       <span th:text="${note.text}"></span>
       <!-- Отображение тегов заметки -->
       <span th:if="${note.tags.size() > 0}">
                 (Теги:
-                <span th:each="tag : ${note.tags}" th:text="${tag.name}"></span>)
+                <span th:each="tag : ${note.tags}" th:text="${tag.name+' '}"></span>)
             </span>
     </li>
-    <li class="list-group-item text-center">
+    <li class="list-group-item text-center bg-dark">
       <strong th:if="${notes.size() == 0}">Нет заметок с такими параметрами.</strong>
     </li>
   </ul>
@@ -51,4 +53,23 @@
 </div>
 
 </body>
+
+<script>
+  var socket = new SockJS('/ws');
+  var stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+
+    stompClient.subscribe('/topic/reminders', function (title) {
+      // console.log('Received message:'+ title.body);
+      showNotification(title.body);
+      location.reload();
+    });
+  });
+
+  function showNotification(title) {
+    alert("Напоминание: " + title);
+  }
+</script>
 </html>

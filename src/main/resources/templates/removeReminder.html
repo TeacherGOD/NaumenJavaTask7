@@ -5,21 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Удалить Напоминание</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="container bg-dark text-light p-4">
 <h1>Удалить Напоминание</h1>
 
 <form action="#" th:action="@{/notes/reminders/{reminderId}/delete(reminderId=${reminder.id})}" method="post">
     <p>Вы уверены, что хотите удалить следующее напоминание?</p>
-    <p th:text="'Напоминание на: ' + ${reminder.time}"></p>
-
-<!--    &lt;!&ndash; Здесь мы не используем th:field для id, так как это скрытое поле &ndash;&gt;-->
-<!--    <input type="hidden" th:field="*{id}" />-->
-
+    <p>Напоминание стоит на: <span th:text="${#temporals.format(reminder.time, 'dd MMMM yyyy HH:mm')}"></span></p>
     <button type="submit">Удалить Напоминание</button>
 </form>
-
-<a th:href="@{/notes/view}">Назад к Заметкам</a>
+<br>
+<a th:href="@{/notes/view/all}" class="btn btn-secondary">>Назад к Заметкам</a>
 
 </body>
 </html>

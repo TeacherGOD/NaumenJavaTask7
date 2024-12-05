@@ -11,24 +11,25 @@
 
     <meta name="csrf-token" th:content="${_csrf.token}"/>
 </head>
-<body>
-<h1>Notes List</h1>
+<body class="container bg-dark text-light p-4">
+
+<h1>Список заметок:</h1>
 <table class="table">
     <thead>
     <tr>
-        <th>Id</th>
+<!--        <th>Id</th>-->
         <th>Заголовок</th>
         <th>Категория</th>
         <th>Закреплен</th>
         <th>Теги</th>
         <th>Текст</th>
-        <th>Пользователь</th>
+        <th th:if="${user.hasRole('ADMIN')}">Пользователь</th>
         <th>Напоминание</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="note : ${notes}">
-        <td th:text="${note.id}"></td>
+<!--        <td th:text="${note.id}"></td>-->
         <td th:text="${note.title}"></td>
         <td th:text="${note.category}"></td>
         <td>
@@ -39,10 +40,10 @@
         <td>
             <textarea th:text="${note.text}" class="form-control" rows="5" style="resize: both;"></textarea>
         </td>
-        <td th:text="${note.user}"></td>
+        <td th:if="${user.hasRole('ADMIN')}" th:text="${note.user}"></td>
         <td>
             <div th:if="${note.reminder != null}">
-                <p>Напоминание стоит на: <span th:text="${note.reminder.time}"></span></p>
+                <p>Напоминание стоит на: <span th:text="${#temporals.format(note.reminder.time, 'dd MMMM yyyy HH:mm')}"></span></p>
                 <div th:if="${!note.reminder.enabled}">
                     <p>
                         Окончено! Надеюсь ты видел уведомление.
@@ -72,20 +73,23 @@
 
     </tbody>
 </table>
-
-<a th:href="@{/notes/create}" class="btn btn-success">Добавить заметку</a>
-<a th:href="@{/categories}" class="btn btn-success">Управление Категориями</a>
+<div class="container">
+    <div class="row">
+        <div class="col-6 mx-auto">
+<a th:href="@{/notes/create}" class="btn btn-success m-3">Добавить заметку</a>
+<a th:href="@{/categories}" class="btn btn-success m-3">Управление Категориями</a>
 <div th:if="${not (user.hasRole('PREMIUM') or user.hasRole('ADMIN'))}">
     <form th:action="@{/users/{id}/upgradeToPremium(id=${user.id})}" method="post" style="display:inline;">
         <button type="submit">Стать премиум аккаунтом</button>
     </form>
 </div>
 <div th:if="${user.hasRole('PREMIUM') or user.hasRole('ADMIN')}">
-    <a th:href="@{/tags}" class="btn btn-success">Управление тегами</a>
+    <a th:href="@{/tags}" class="btn btn-success m-3">Управление тегами</a>
 </div>
-<a th:href="@{/tags/filter}" class="btn btn-success">Поиск</a>
+<a th:href="@{/tags/filter}" class="btn btn-success m-3">Поиск</a>
 
 <br/>
+
 <!--<form th:action="@{/api/reports}" method="post">-->
 <!--    <button type="submit" class="btn btn-primary">Создать отчёт. Но зачем?</button>-->
 <!--</form>-->
@@ -95,8 +99,11 @@
 <br/>
 <form action="/logout" method="post" style="display:inline;" th:action="@{/logout}">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button type="submit" class="btn btn-lg btn-danger">Выйти</button>
+    <button type="submit" class="btn btn-lg btn-danger m-3">Выйти</button>
 </form>
+        </div>
+    </div>
+</div>
 <!--<script>-->
 <!--    function goToSite() {-->
 <!--        var number = document.getElementById('numberInput').value;-->

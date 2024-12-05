@@ -3,8 +3,10 @@
 <head>
   <title>Edit Note</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
-<body>
+<body class="container bg-dark text-light p-4">
 <h1>Edit Note</h1>
 
 <form th:action="@{/notes/edit/{id}(id=${note.id})}" method="post">
@@ -41,4 +43,22 @@
 </form>
 
 </body>
+<script>
+  var socket = new SockJS('/ws');
+  var stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+
+    stompClient.subscribe('/topic/reminders', function (title) {
+      // console.log('Received message:'+ title.body);
+      showNotification(title.body);
+      location.reload();
+    });
+  });
+
+  function showNotification(title) {
+    alert("Напоминание: " + title);
+  }
+</script>
 </html>
