@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 
 /**
  * Пользовательский сервис для загрузки данных о пользователе.

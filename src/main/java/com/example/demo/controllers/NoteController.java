@@ -120,7 +120,20 @@ public class NoteController {
      * @return Перенаправление на страницу со всеми заметками.
      */
     @PostMapping("/pin/{id}")
-    public String togglePin(@PathVariable Long id) {
+    public String togglePin(@PathVariable Long id,@AuthenticationPrincipal UserDetails userDetails) {
+        var userName = userDetails.getUsername();
+        var currentUser = userService.findByUsername(userName);
+        Note note;
+        try {
+            note = noteService.findNote(id);
+        } catch (Exception ex) {
+            logger.error("Проблема при закреплении заметки с id {}: {}", id, ex.getMessage());
+            return "redirect:" + ViewConstants.HOME_PAGE;
+        }
+        if (!Objects.equals(currentUser.getUsername(), note.getUser().getUsername())) {
+            logger.warn("Попытка закрепить чужую заметку: {} пользователем: {}", id, currentUser.getUsername());
+            return "redirect:" + ViewConstants.HOME_PAGE;
+        }
         noteService.togglePin(id);
         logger.debug("Заметка с ID {} была переключена на закрепленную/незакрепленную.", id);
         return "redirect:" + ViewConstants.HOME_PAGE;
@@ -135,10 +148,16 @@ public class NoteController {
      * @return Название HTML-шаблона для редактирования заметки или перенаправление, если заметка не найдена.
      */
     @GetMapping("/edit/{id}")
-    public String editNoteForm(@PathVariable Long id, Model model) {
+    public String editNoteForm(@PathVariable Long id, Model model,@AuthenticationPrincipal UserDetails userDetails) {
         Note note = noteService.getNoteById(id);
         if (note == null) {
             logger.warn("Попытка редактирования несуществующей заметки с ID {}.", id);
+            return "redirect:" + ViewConstants.HOME_PAGE;
+        }
+        var userName = userDetails.getUsername();
+        var currentUser = userService.findByUsername(userName);
+        if (!Objects.equals(currentUser.getUsername(), note.getUser().getUsername())) {
+            logger.warn("Попытка редактировать чужую заметку: {} пользователем: {}", id, currentUser.getUsername());
             return "redirect:" + ViewConstants.HOME_PAGE;
         }
         var user = note.getUser();
@@ -152,7 +171,13 @@ public class NoteController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateNote(@PathVariable Long id, @ModelAttribute Note note) {
+    public String updateNote(@PathVariable Long id, @ModelAttribute Note note,@AuthenticationPrincipal UserDetails userDetails) {
+        var userName = userDetails.getUsername();
+        var currentUser = userService.findByUsername(userName);
+        if (!Objects.equals(currentUser.getUsername(), note.getUser().getUsername())) {
+            logger.warn("Попытка редактировать чужую заметку: {} пользователем: {}", id, currentUser.getUsername());
+            return "redirect:" + ViewConstants.HOME_PAGE;
+        }
         noteService.updateNote(id, note.getTitle(), note.getText(), note.getCategory(), note.getTags());
         logger.debug("Заметка с ID {} была обновлена.", id);
         return "redirect:" + ViewConstants.HOME_PAGE; // Перенаправление после успешного обновления

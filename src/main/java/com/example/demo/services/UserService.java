@@ -1,11 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Role;
-import com.example.demo.entities.Tag;
 import com.example.demo.entities.User;
 import com.example.demo.exceptions.AlreadyExistException;
 import com.example.demo.repositories.RoleRepository;
-import com.example.demo.repositories.TagRepository;
 import com.example.demo.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
